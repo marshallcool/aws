@@ -13,15 +13,10 @@ export class AwsUtil {
     AWS.config.region = CognitoUtil._REGION;
   }
 
-  /**
-   * This is the method that needs to be called in order to init the aws global creds
-   */
   initAwsService(callback: Callback, isLoggedIn: boolean, idToken: string) {
 
     if (AwsUtil.runningInit) {
-      // Need to make sure I don't get into an infinite loop here, so need to exit if this method is running already
       console.log('AwsUtil: Aborting running initAwsService()...its running already.');
-      // instead of aborting here, it's best to put a timer
       if (callback != null) {
         callback.callback();
         callback.callbackWithParam(null);
@@ -35,7 +30,6 @@ export class AwsUtil {
 
 
     let mythis = this;
-    // First check if the user is authenticated already
     if (isLoggedIn) {
       mythis.setupAWS(isLoggedIn, callback, idToken);
     }
@@ -85,9 +79,7 @@ export class AwsUtil {
 
     AWS.config.credentials.get(function (err) {
       if (!err) {
-        // var id = AWS.config.credentials.identityId;
         if (AwsUtil.firstLogin) {
-          // save the login info to DDB
           this.ddb.writeLogEntry('login');
           AwsUtil.firstLogin = false;
         }
