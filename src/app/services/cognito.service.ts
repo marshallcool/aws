@@ -2,10 +2,6 @@ import { Injectable, Inject } from '@angular/core';
 
 import { environment } from '../../environments/environment';
 
-/**
- * Created by Vladimir Budilov
- */
-
 
 declare var AWSCognito: any;
 declare var AWS: any;
